@@ -70,11 +70,11 @@ const gameBoard = (() => {
 		let win16 = gameboard[2] === 'O' && gameboard[4] ==='O' && gameboard[6] === 'O'
 
 		if (win1 || win2 || win3 || win4 || win5 || win6 || win7 || win8) {
-			displayController.para.textContent = 'Game over. Playes X has won'
+			displayController.para.textContent = `Game over. Player X has won`
 			displayController.gameIsDone = true
 			cells.forEach(item => item.classList.add('non_clickable'))
 		} else if (win9 || win10 || win11 || win12 || win13 || win14 || win15 || win16) {
-			displayController.para.textContent = 'Game over. Playes O has won'
+			displayController.para.textContent = `Game over. Player O has won`
 			displayController.gameIsDone = true
 			cells.forEach(item => item.classList.add('non_clickable'))
 		} else if (!gameboard.includes(undefined) && gameboard.length === 9) {
