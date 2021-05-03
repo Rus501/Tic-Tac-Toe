@@ -30,11 +30,27 @@ const displayController = (() => {
 			playerTurn.textContent = `Player X's turn`
 		}
 
+		gameBoard.checkCondition(0, 1, 2, 'X')
+		gameBoard.checkCondition(3, 4, 5, 'X')
+		gameBoard.checkCondition(6, 7, 8, 'X')
+		gameBoard.checkCondition(0, 3, 6, 'X')
+		gameBoard.checkCondition(1, 4, 7, 'X')
+		gameBoard.checkCondition(2, 5, 8, 'X')
+		gameBoard.checkCondition(0, 4, 8, 'X')
+		gameBoard.checkCondition(2, 4, 6, 'X')
 
-		gameBoard.checkWinner()
-		if (gameBoard.xWon) {
+		gameBoard.checkCondition(0, 1, 2, 'O')
+		gameBoard.checkCondition(3, 4, 5, 'O')
+		gameBoard.checkCondition(6, 7, 8, 'O')
+		gameBoard.checkCondition(0, 3, 6, 'O')
+		gameBoard.checkCondition(1, 4, 7, 'O')
+		gameBoard.checkCondition(2, 5, 8, 'O')
+		gameBoard.checkCondition(0, 4, 8, 'O')
+		gameBoard.checkCondition(2, 4, 6, 'O')
+
+		if (gameBoard.winner === 'X') {
 			playerTurn.textContent = `Game over. Player X has won`
-		} else if (gameBoard.xWon === false) {
+		} else if (gameBoard.winner === 'O') {
 			playerTurn.textContent = `Game over. Player O has won`
 		// checking for a tie. If we have no empty cells and the board is full
 		} else if (!gameBoard.gameboard.includes(undefined) && gameBoard.gameboard.length === 9) {
@@ -49,7 +65,7 @@ const displayController = (() => {
 	function restartTheGame() {
 		gameBoard.clearGameboardArray()
 		isXturn = true
-		gameBoard.xWon = null
+		gameBoard.winner = null
 		playerTurn.textContent = `Player X's turn`
 		cells.forEach(item => {
 			item.classList.remove('non_clickable')
@@ -60,39 +76,17 @@ const displayController = (() => {
 
 const gameBoard = (() => {
 	const gameboard = []
-	let xWon = null
+	const winner = null
 
 	const clearGameboardArray = () => gameboard.length = 0
 
-	const checkWinner = () => {
-		let win1 = gameboard[0] === 'X' && gameboard[1] ==='X' && gameboard[2] === 'X'
-		let win2 = gameboard[3] === 'X' && gameboard[4] ==='X' && gameboard[5] === 'X'
-		let win3 = gameboard[6] === 'X' && gameboard[7] ==='X' && gameboard[8] === 'X'
-		let win4 = gameboard[0] === 'X' && gameboard[3] ==='X' && gameboard[6] === 'X'
-		let win5 = gameboard[1] === 'X' && gameboard[4] ==='X' && gameboard[7] === 'X'
- 		let win6 = gameboard[2] === 'X' && gameboard[5] ==='X' && gameboard[8] === 'X'
-		let win7 = gameboard[0] === 'X' && gameboard[4] ==='X' && gameboard[8] === 'X'
-		let win8 = gameboard[2] === 'X' && gameboard[4] ==='X' && gameboard[6] === 'X'
-		let win9 = gameboard[0] === 'O' && gameboard[1] ==='O' && gameboard[2] === 'O'
-		let win10 = gameboard[3] === 'O' && gameboard[4] ==='O' && gameboard[5] === 'O'
-		let win11 = gameboard[6] === 'O' && gameboard[7] ==='O' && gameboard[8] === 'O'
-		let win12 = gameboard[0] === 'O' && gameboard[3] ==='O' && gameboard[6] === 'O'
-		let win13 = gameboard[1] === 'O' && gameboard[4] ==='O' && gameboard[7] === 'O'
- 		let win14 = gameboard[2] === 'O' && gameboard[5] ==='O' && gameboard[8] === 'O'
-		let win15 = gameboard[0] === 'O' && gameboard[4] ==='O' && gameboard[8] === 'O'
-		let win16 = gameboard[2] === 'O' && gameboard[4] ==='O' && gameboard[6] === 'O'
-
-		let winX = win1 || win2 || win3 || win4 || win5 || win6 || win7 || win8
-		let winO = win9 || win10 || win11 || win12 || win13 || win14 || win15 || win16
-
-		if (winX) {
-			gameBoard.xWon = true
-		} else if (winO) {
-			gameBoard.xWon = false
-		}
+	const checkCondition = (n1, n2, n3, mark) => {
+	   if (gameboard[n1] === mark && 
+	   	 gameboard[n2] === mark && 
+	   	 gameboard[n3] === mark) { gameBoard.winner = mark }
 	}
 
-	return { gameboard, clearGameboardArray, checkWinner, xWon }
+	return { gameboard, clearGameboardArray, checkCondition, winner }
 })()
 
 const Player = (name, marker) => {
