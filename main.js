@@ -14,7 +14,6 @@ const displayController = (() => {
 		// return if cell is already populated
 		if (target.textContent !== '') return
 
-
 		// turns logic
 		let index = cells.indexOf(target)
 
@@ -30,23 +29,8 @@ const displayController = (() => {
 			playerTurn.textContent = `Player X's turn`
 		}
 
-		gameBoard.checkCondition(0, 1, 2, 'X')
-		gameBoard.checkCondition(3, 4, 5, 'X')
-		gameBoard.checkCondition(6, 7, 8, 'X')
-		gameBoard.checkCondition(0, 3, 6, 'X')
-		gameBoard.checkCondition(1, 4, 7, 'X')
-		gameBoard.checkCondition(2, 5, 8, 'X')
-		gameBoard.checkCondition(0, 4, 8, 'X')
-		gameBoard.checkCondition(2, 4, 6, 'X')
-
-		gameBoard.checkCondition(0, 1, 2, 'O')
-		gameBoard.checkCondition(3, 4, 5, 'O')
-		gameBoard.checkCondition(6, 7, 8, 'O')
-		gameBoard.checkCondition(0, 3, 6, 'O')
-		gameBoard.checkCondition(1, 4, 7, 'O')
-		gameBoard.checkCondition(2, 5, 8, 'O')
-		gameBoard.checkCondition(0, 4, 8, 'O')
-		gameBoard.checkCondition(2, 4, 6, 'O')
+		gameBoard.isWinner(player1.marker)
+		gameBoard.isWinner(player2.marker)
 
 		if (gameBoard.winner === 'X') {
 			playerTurn.textContent = `Game over. Player X has won`
@@ -80,13 +64,24 @@ const gameBoard = (() => {
 
 	const clearGameboardArray = () => gameboard.length = 0
 
-	const checkCondition = (n1, n2, n3, mark) => {
-	   if (gameboard[n1] === mark && 
-	   	 gameboard[n2] === mark && 
-	   	 gameboard[n3] === mark) { gameBoard.winner = mark }
+	const _checkCondition = (n1, n2, n3, mark) => {
+	   if (gameboard[n1] === mark && gameboard[n2] === mark && gameboard[n3] === mark) { 
+	   	gameBoard.winner = mark 
+	   }
 	}
 
-	return { gameboard, clearGameboardArray, checkCondition, winner }
+	const isWinner = mark => {
+		_checkCondition(0, 1, 2, mark)
+		_checkCondition(3, 4, 5, mark)
+		_checkCondition(6, 7, 8, mark)
+		_checkCondition(0, 3, 6, mark)
+		_checkCondition(1, 4, 7, mark)
+		_checkCondition(2, 5, 8, mark)
+		_checkCondition(0, 4, 8, mark)
+		_checkCondition(2, 4, 6, mark)
+	}
+
+	return { gameboard, winner, clearGameboardArray, isWinner }
 })()
 
 const Player = (name, marker) => {
